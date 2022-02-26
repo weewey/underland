@@ -15,7 +15,8 @@ func main() {
 
 	r := mux.NewRouter()
 	r.HandleFunc("/ping", handlers.HealthCheckHandler)
-	r.HandleFunc("/get-token-metadata", handlers.GetTokenMetaData(solanaClient))
+	r.HandleFunc("/token-metadata", handlers.TokenMetaDataHandler(solanaClient)).Methods("GET")
+	r.HandleFunc("/increment-social-index", handlers.IncrementSocialIndexHandler(solanaClient)).Methods("POST")
 
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
