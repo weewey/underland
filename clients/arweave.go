@@ -28,7 +28,10 @@ func NewArweaveClient(arweavePvtKey string, arweaveUrl string) *ArweaveClient {
 
 func (a *ArweaveClient) UploadMetadata(data *models.CharacterMetaData) (types.Transaction, error) {
 	metadataJson, _ := json.Marshal(data)
-	tx, err := a.wallet.SendData(metadataJson, []types.Tag{})
+	tx, err := a.wallet.SendData(metadataJson, []types.Tag{{
+		Name:  "Content-Type",
+		Value: "application/json",
+	}})
 	if err != nil {
 		fmt.Printf("Error uploading data to arweave %s", err.Error())
 		return types.Transaction{}, err

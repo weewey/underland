@@ -25,10 +25,18 @@ func main() {
 
 	r := mux.NewRouter()
 	r.HandleFunc("/ping", handlers.HealthCheckHandler)
+
 	r.HandleFunc("/token-metadata",
 		handlers.TokenMetaDataHandler(solanaClient, arweaveClient)).Methods("GET")
+
 	r.HandleFunc("/increment-social",
 		handlers.IncrementSocialHandler(solanaClient, arweaveClient)).Methods("POST")
+
+	r.HandleFunc("/upload-metadata",
+		handlers.UploadMetadataHandler(arweaveClient)).Methods("POST")
+
+	r.HandleFunc("/update-metadata",
+		handlers.UpdateMetadataHandler(solanaClient)).Methods("POST")
 
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), r))
 }
